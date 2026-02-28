@@ -10,7 +10,7 @@ class BookList extends StatefulWidget {
 
 class _BookListState extends State<BookList> {
   final List<Book> _books = [
-    Book(title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', coverUrl: 'assets/images/The_Great_Gatsby.jpg'),
+    Book(title: 'The Great Gatsby', author: 'F.Scott Fitzgerald', coverUrl: 'assets/images/The_Great_Gatsby.jpg'),
     Book(title: 'To Kill a Mockingbird', author: 'Harper Lee', coverUrl: 'assets/images/To_Kill_a_Mockingbird.jpg'),
     Book(title: '1984', author: 'George Orwell', coverUrl: 'assets/images/1984.jpg'),
   ];
