@@ -25,8 +25,9 @@ class _BookListState extends State<BookList> {
   int _newBookIndex = 0;
 
   void _addBook() {
+    if (_newBookIndex >= _newBooks.length) return;
     setState(() {
-      _books.add(_newBooks[_newBookIndex % _newBooks.length]);
+      _books.add(_newBooks[_newBookIndex]);
       _newBookIndex++;
     });
   }
@@ -53,41 +54,41 @@ class _BookListState extends State<BookList> {
           ),
         ],
       ),
-      body:
-          _books.isEmpty
-              ? _buildEmptyState()
-              : Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                    decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(28), bottomRight: Radius.circular(28)),
-                    ),
-                    child: const Text(
-                      'Tap the button below to add more books!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white70, fontSize: 13),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
-                      itemCount: _books.length,
-                      itemBuilder: (context, index) => _buildBookCard(index),
-                    ),
-                  ),
-                ],
-              ),
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+            decoration: const BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(28), bottomRight: Radius.circular(28)),
+            ),
+            child: const Text(
+              'Tap the button below to add more books!',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white70, fontSize: 13),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
+              itemCount: _books.length,
+              itemBuilder: (context, index) => _buildBookCard(index),
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _addBook,
-        backgroundColor: Colors.blue,
+        onPressed: _newBookIndex >= _newBooks.length ? null : _addBook,
+        backgroundColor: _newBookIndex >= _newBooks.length ? Colors.grey : Colors.blue,
         foregroundColor: Colors.white,
         elevation: 6,
         icon: const Icon(Icons.add),
-        label: const Text('Add Book', style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
+        label: Text(
+          _newBookIndex >= _newBooks.length ? 'All Books Added' : 'Add Book',
+          style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1),
+        ),
       ),
     );
   }
@@ -115,7 +116,6 @@ class _BookListState extends State<BookList> {
                         width: 52,
                         height: 72,
                         fit: BoxFit.cover,
-                        // ✅ Fallback if asset is missing
                         errorBuilder: (context, error, stackTrace) => _coverPlaceholder(),
                       )
                       : _coverPlaceholder(),
@@ -159,25 +159,6 @@ class _BookListState extends State<BookList> {
       height: 72,
       decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
       child: const Icon(Icons.book, color: Colors.blue, size: 28),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.library_books_outlined, size: 90, color: Colors.grey[300]),
-          const SizedBox(height: 16),
-          Text('No Books Yet!', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.grey[500])),
-          const SizedBox(height: 8),
-          Text(
-            'Press the button below\nto add your first book.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, color: Colors.grey[400]),
-          ),
-        ],
-      ),
     );
   }
 }
